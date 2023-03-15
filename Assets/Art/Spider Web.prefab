@@ -128,3 +128,6 @@ MonoBehaviour:
   force: 20
   length: 0.8
   isLauncher: 0
+  fadeDuration: 1
+  audioManager: {fileID: 0}
+  isButterfly: 0

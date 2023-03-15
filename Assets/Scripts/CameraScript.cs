@@ -7,6 +7,8 @@ public class CameraScript : MonoBehaviour
 {   
     public GameObject snake;
 
+    public AudioManager audioManager;
+
     public Snake snakeScript;
 
     public float cameraSpeed;
@@ -38,6 +40,7 @@ public class CameraScript : MonoBehaviour
     private float startPos;
 
     public float threshold = 0.1f;
+    public AudioSource windSound;
 
     void Start()
     {
@@ -84,7 +87,7 @@ public class CameraScript : MonoBehaviour
     {
         hasEnded = true;
         StartCoroutine(MoveCamera());
-        CalculateScore();
+        CalculateScore(); 
     }
 
     private IEnumerator MoveCamera()
@@ -93,6 +96,8 @@ public class CameraScript : MonoBehaviour
         float oldPos = transform.position.y;
 
         splash.Play();
+        audioManager.hitWater();
+        windSound.volume = 0;
 
         yield return new WaitForSeconds(waitDuration);
         timer = 0;
@@ -106,10 +111,13 @@ public class CameraScript : MonoBehaviour
             yield return null;
         }
 
+        audioManager.receiveScore();
         sign1.enabled = true;
         sign1.Play("Sings");
+        yield return new WaitForSeconds(0.3f);
         sign2.enabled = true;
         sign2.Play("Sings");
+        yield return new WaitForSeconds(0.3f);
         sign3.enabled = true;
         sign3.Play("Sings");
 
@@ -121,10 +129,10 @@ public class CameraScript : MonoBehaviour
 
     void CalculateScore()
     {
-        int score = Mathf.Clamp(Game.score + 2, 2, 10);
+        int score = Mathf.Clamp(Game.score + 3, 2, 10);
         int s1 = Mathf.Clamp(score + Random.Range(0,1), 1, 10);
-        int s2 = Mathf.Clamp(score + Random.Range(-1,0), 1, 10);
-        int s3 = Mathf.Clamp(score + Random.Range(1,4), 1, 10);
+        int s2 = Mathf.Clamp(score + Random.Range(-2,0), 1, 10);
+        int s3 = Mathf.Clamp(score + Random.Range(1,5), 1, 10);
 
         t1.text = s1.ToString();
         t2.text = s2.ToString();

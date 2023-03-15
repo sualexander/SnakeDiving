@@ -23,6 +23,8 @@ public class MenuScript : MonoBehaviour
     public Color defaultColor;
     public Color hoverColor;
 
+    public AudioSource woosh;
+
     public void onHover()
     {
         startButton.color = hoverColor;
@@ -47,6 +49,8 @@ public class MenuScript : MonoBehaviour
         jump.enabled = true;
         jump.speed = 0.5f;
         jump.Play("SnakeJump");
+
+        woosh.Play();
 
         yield return new WaitForSeconds(waitDiving);
 

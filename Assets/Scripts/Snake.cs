@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Snake : MonoBehaviour
 {
+    public AudioSource bgm;
+    public float fadeSpeed = 0.0001f;
     public GameObject hook;
     public GameObject bone1;
     public float gravity = 5;
@@ -114,6 +116,7 @@ public class Snake : MonoBehaviour
                     var rigidBody = child.GetComponent<Rigidbody2D>();
                     rigidBody.gravityScale = 0;
                 }
+                //StartCoroutine(FadeOut());
             }
             hook.transform.Translate(Vector2.down * diveSpeed * Time.deltaTime, Space.World);
         }   
@@ -132,5 +135,18 @@ public class Snake : MonoBehaviour
         }
 
         hasBordered = false;
+    }
+
+    private IEnumerator FadeOut()
+    {
+        float timer = 0;
+        float duration = 3;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime / duration;
+            bgm.volume = bgm.volume - fadeSpeed;
+            yield return null;
+        }
     }
 }

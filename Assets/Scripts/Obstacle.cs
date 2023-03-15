@@ -13,6 +13,10 @@ public class Obstacle : MonoBehaviour
 
     public float fadeDuration = 1;
 
+    public AudioManager audioManager;
+
+    public bool isButterfly = true;
+
     Transform hook;
 
     void Start()
@@ -24,13 +28,15 @@ public class Obstacle : MonoBehaviour
     {
         if (collision.CompareTag("SnakeHead"))
         {
-            print("collided");
             if (!hasCollided)
             {
                 hasCollided = true;
                 Game.score += score;
                 print(Game.score);
                 StartCoroutine(FadeOut());
+
+                if (isButterfly) audioManager.touchButterfly();
+                else audioManager.touchWeb();
                 
                 if (isLauncher)
                 {

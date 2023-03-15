@@ -14,22 +14,22 @@ public class AudioManager : MonoBehaviour
 
 public void touchButterfly()
 {
-    audioSource.PlayOneShot(butterflySound, 1);
+    audioSource.PlayOneShot(butterflySound, 1.5f);
 }
 
 public void hitWater()
 {
-    audioSource.PlayOneShot(splashSound, 1);
-    audioSource.PlayOneShot(cheerSound, 1);
+    audioSource.PlayOneShot(splashSound, 2f);
+    audioSource.PlayOneShot(cheerSound, 2f);
 }
 
 public void receiveScore()
 {
-    audioSource.PlayOneShot(judgeSound, 1);
+    audioSource.PlayOneShot(judgeSound, 2.5f);
 }
 
 public void touchWeb()
 {
-    audioSource.PlayOneShot(cobwebSound, 1);
+    audioSource.PlayOneShot(cobwebSound, 2);
 }
 }
