@@ -32,4 +32,10 @@ public void touchWeb()
 {
     audioSource.PlayOneShot(cobwebSound, 2);
 }
+
+public void cheer()
+{
+    audioSource.PlayOneShot(cheerSound, 1.5f);
+}
+
 }

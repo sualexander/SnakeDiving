@@ -42,6 +42,15 @@ public class CameraScript : MonoBehaviour
     public float threshold = 0.1f;
     public AudioSource windSound;
 
+    public float cheerHeight = -109;
+    public float cheerHeight2 = - 120;
+
+    public Animator judgeBlue;
+    public Animator judgeRed;
+
+    private bool hasCheered = false;
+    private bool hasCheered2 = false;
+
     void Start()
     {
         startPos = transform.position.y;
@@ -78,6 +87,27 @@ public class CameraScript : MonoBehaviour
                 if (transform.position.y <= endingHeight)
                 {
                     StopCamera();
+                }
+
+                if (pos.y <= cheerHeight)
+                {
+                    if (!hasCheered)
+                    {
+                        hasCheered = true;
+                        judgeBlue.enabled = true;
+                        judgeBlue.Play("JudgeBlue");
+                        audioManager.cheer();
+                    }
+                }
+
+                if (pos.y <= cheerHeight2)
+                {
+                    if (!hasCheered2)
+                    {
+                        hasCheered2 = true;
+                        judgeRed.enabled = true;
+                        audioManager.cheer();
+                    }
                 }
             }
         }
