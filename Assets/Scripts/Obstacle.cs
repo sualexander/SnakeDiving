@@ -17,6 +17,8 @@ public class Obstacle : MonoBehaviour
 
     public bool isButterfly = true;
 
+    public ParticleSystem stars;
+
     Transform hook;
 
     void Start()
@@ -35,7 +37,11 @@ public class Obstacle : MonoBehaviour
                 print(Game.score);
                 StartCoroutine(FadeOut());
 
-                if (isButterfly) audioManager.touchButterfly();
+                if (isButterfly) {
+                    audioManager.touchButterfly();
+                    stars.Play();
+                    print("stars generated");
+                }
                 else audioManager.touchWeb();
                 
                 if (isLauncher)
