@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
@@ -15,5 +16,10 @@ public class Game : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void restartGame()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }

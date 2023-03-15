@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class Snake : MonoBehaviour
 {
     public GameObject hook;
+    public GameObject bone1;
     public float gravity = 5;
     public float speed = 1;
     public float amplitude = 1;
@@ -17,7 +18,8 @@ public class Snake : MonoBehaviour
     private InputAction movement;
     public float sensitivity = 1;
     public float factor = 4;
-    public float width;
+    public float leftBound = 0;
+    public float rightBound = 1000;
     public float borderForce = 100;
     public float rotationRate = 2;
 
@@ -27,6 +29,7 @@ public class Snake : MonoBehaviour
     public float degrees = 2;
 
     public GameObject mainCamera;
+    private Camera cam;
 
     void Awake()
     {
@@ -49,6 +52,7 @@ public class Snake : MonoBehaviour
     void Start()
     {
         RVERTICAL = hook.transform.rotation * Quaternion.Euler(0,0,180);
+        cam = mainCamera.GetComponent<Camera>();
     }
 
     private bool hasBordered = false;
@@ -62,9 +66,12 @@ public class Snake : MonoBehaviour
             hook.transform.Translate(Vector2.down * gravity * Time.deltaTime, Space.World);
             hook.transform.Translate(Vector2.right * Mathf.Sin(Time.time * speed) * amplitude * Time.deltaTime, Space.World);
 
-            Vector2 pos = hook.transform.TransformPoint(hook.transform.position);
-            print(pos);
-            if (pos.x > width / 2)
+            Vector2 pos = hook.transform.TransformPoint(bone1.transform.position);
+            Vector2 screenPos = bone1.transform.position;
+
+            print(screenPos.x);
+
+            if (screenPos.x > rightBound)
             {
                 if (!hasBordered)
                 {
@@ -72,7 +79,7 @@ public class Snake : MonoBehaviour
                     StartCoroutine(Deflect(Vector2.left));
                 }
             }
-            else if (pos.x < width / 2 * - 1)
+            else if (screenPos.x < leftBound)
             {
                 if (!hasBordered)
                 {
@@ -92,8 +99,7 @@ public class Snake : MonoBehaviour
                 }
                 hook.transform.Translate(moveVec * Time.deltaTime * sensitivity, Space.World);
             } 
-
-            if (pos.y <= threshold) 
+            if (mainCamera.transform.position.y <= threshold) 
             {
                 ending = true;
             }
@@ -103,7 +109,6 @@ public class Snake : MonoBehaviour
             if (!hasEnded)
             {
                 hasEnded = true;
-                mainCamera.GetComponent<CameraScript>().StopCamera();
                 foreach (Transform child in transform)
                 {
                     var rigidBody = child.GetComponent<Rigidbody2D>();

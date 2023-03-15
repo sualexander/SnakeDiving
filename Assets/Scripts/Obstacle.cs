@@ -22,17 +22,21 @@ public class Obstacle : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!hasCollided)
+        if (collision.CompareTag("SnakeHead"))
         {
-            hasCollided = true;
-            Game.score += score;
-            print(Game.score);
-            StartCoroutine(FadeOut());
-            
-            // if (isLauncher)
-            // {
-            //     StartCoroutine(Launch());
-            // }
+            print("collided");
+            if (!hasCollided)
+            {
+                hasCollided = true;
+                Game.score += score;
+                print(Game.score);
+                StartCoroutine(FadeOut());
+                
+                if (isLauncher)
+                {
+                    StartCoroutine(Launch());
+                }
+            }
         }
     }
 

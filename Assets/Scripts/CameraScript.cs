@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CameraScript : MonoBehaviour
 {   
     public GameObject snake;
 
+    public Snake snakeScript;
+
+    public float cameraSpeed;
     public float endingHeight = -180;
     public float length = 8;
     private bool hasEnded = false;
@@ -16,12 +20,63 @@ public class CameraScript : MonoBehaviour
     public ParticleSystem splash;
     public float nextWaitDuration = 2;
 
+    public float maxHeight;
+
+    public Animator sign1;
+    public Animator sign2;
+    public Animator sign3;
+
+    public TMP_Text t1;
+    public TMP_Text t2;
+    public TMP_Text t3;
+
+    public TMP_Text totalScore;
+    public Animator finalScoreAnim;
+
+    public bool stopped = true;
+    
+    private float startPos;
+
+    public float threshold = 0.1f;
+
+    void Start()
+    {
+        startPos = transform.position.y;
+    }
+
+    private float alpha = 0;
     void Update()
     {
         if (!hasEnded)
         {
-            Vector3 pos = transform.position;
-            transform.position = new Vector3(pos.x, snake.transform.position.y, pos.z);
+            if (stopped)
+            {
+                float snakeVert = snake.transform.position.y;
+                Vector3 pos = transform.position;
+                alpha += Time.deltaTime * cameraSpeed;
+                alpha = Mathf.Clamp(alpha, 0, 1);
+                float newVert = Mathf.Lerp(startPos, snakeVert, alpha);
+                transform.position = new Vector3(pos.x, newVert, pos.z);
+                print(newVert);
+                if (Mathf.Abs(transform.position.y - snakeVert) <= threshold)
+                {
+                    stopped = false;
+                    snakeScript.gravity = 4;
+                }
+            }
+            else
+            {
+                Vector3 pos = transform.position;
+                float vert = Mathf.Clamp(snake.transform.position.y, -1000, maxHeight);
+
+                //float newVert = Mathf.Lerp(transform.position.y, vert, Time.deltaTime * cameraSpeed);
+                transform.position = new Vector3(pos.x, vert, pos.z);
+
+                if (transform.position.y <= endingHeight)
+                {
+                    StopCamera();
+                }
+            }
         }
     }
 
@@ -29,19 +84,13 @@ public class CameraScript : MonoBehaviour
     {
         hasEnded = true;
         StartCoroutine(MoveCamera());
+        CalculateScore();
     }
 
     private IEnumerator MoveCamera()
     {
         float timer = 0;
         float oldPos = transform.position.y;
-        while (timer < length)
-        {
-            timer += Time.deltaTime / length;
-            float newPos = Mathf.Lerp(oldPos, endingHeight, timer/length);
-            transform.position = new Vector3(transform.position.x, newPos, transform.position.z);
-            yield return null;
-        }
 
         splash.Play();
 
@@ -57,8 +106,30 @@ public class CameraScript : MonoBehaviour
             yield return null;
         }
 
+        sign1.enabled = true;
+        sign1.Play("Sings");
+        sign2.enabled = true;
+        sign2.Play("Sings");
+        sign3.enabled = true;
+        sign3.Play("Sings");
+
         yield return new WaitForSeconds(nextWaitDuration);
 
         finalScore.SetActive(true);
+        finalScoreAnim.enabled = true;
+    }
+
+    void CalculateScore()
+    {
+        int score = Mathf.Clamp(Game.score + 2, 2, 10);
+        int s1 = Mathf.Clamp(score + Random.Range(0,1), 1, 10);
+        int s2 = Mathf.Clamp(score + Random.Range(-1,0), 1, 10);
+        int s3 = Mathf.Clamp(score + Random.Range(1,4), 1, 10);
+
+        t1.text = s1.ToString();
+        t2.text = s2.ToString();
+        t3.text = s3.ToString();
+
+        totalScore.text = (s1+s2+s3).ToString() + "/30";
     }
 }
