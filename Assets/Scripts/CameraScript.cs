@@ -13,6 +13,7 @@ public class CameraScript : MonoBehaviour
     public float panUp = 4;
     public float scoringHeight = -170;
     public GameObject finalScore;
+    public ParticleSystem splash;
     public float nextWaitDuration = 2;
 
     void Update()
@@ -42,6 +43,8 @@ public class CameraScript : MonoBehaviour
             yield return null;
         }
 
+        splash.Play();
+
         yield return new WaitForSeconds(waitDuration);
         timer = 0;
         oldPos = transform.position.y;
@@ -56,6 +59,6 @@ public class CameraScript : MonoBehaviour
 
         yield return new WaitForSeconds(nextWaitDuration);
 
-        finalScore.SetActive(false);
+        finalScore.SetActive(true);
     }
 }
