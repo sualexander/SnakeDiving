@@ -7,6 +7,7 @@ public class CameraScript : MonoBehaviour
     public GameObject snake;
 
     public float endingHeight = -180;
+    public float length = 8;
     private bool hasEnded = false;
 
     void Update()
@@ -28,7 +29,6 @@ public class CameraScript : MonoBehaviour
     {
         print("AWDASDASD");
         float timer = 0;
-        float length = 3f;
 
         while (timer < length)
         {

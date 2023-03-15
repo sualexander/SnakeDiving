@@ -11,6 +11,8 @@ public class Obstacle : MonoBehaviour
 
     private bool hasCollided = false;
 
+    public float fadeDuration = 1;
+
     Transform hook;
 
     void Start()
@@ -25,11 +27,12 @@ public class Obstacle : MonoBehaviour
             hasCollided = true;
             Game.score += score;
             print(Game.score);
+            StartCoroutine(FadeOut());
             
-            if (isLauncher)
-            {
-                StartCoroutine(Launch());
-            }
+            // if (isLauncher)
+            // {
+            //     StartCoroutine(Launch());
+            // }
         }
     }
 
@@ -43,5 +46,23 @@ public class Obstacle : MonoBehaviour
             hook.transform.Translate(Vector2.up * Time.deltaTime * force, Space.World);
             yield return null;
         }
+    }
+
+    private IEnumerator FadeOut()
+    {
+        float timer = 0;
+        float alpha = 1;
+
+        var sprite = transform.GetComponent<SpriteRenderer>().material;
+
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime / fadeDuration;
+            alpha = 1-(timer/fadeDuration);
+            sprite.color = new Color(1,1,1,alpha);
+            yield return null;
+        }
+
+        Destroy(this);
     }
 }

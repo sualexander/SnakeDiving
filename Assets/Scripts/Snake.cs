@@ -84,7 +84,6 @@ public class Snake : MonoBehaviour
                 Vector2 moveVec = movement.ReadValue<Vector2>();
                 if (moveVec.y > 0)
                 {
-                    //print("UPWARDS");
                     moveVec = new Vector2(moveVec.x, 0);
                     print(Quaternion.Slerp(hook.transform.rotation, RVERTICAL, Time.deltaTime * rotationRate));
                     hook.transform.rotation = Quaternion.Slerp(hook.transform.rotation, RVERTICAL, Time.deltaTime * rotationRate);
@@ -104,6 +103,12 @@ public class Snake : MonoBehaviour
             {
                 hasEnded = true;
                 mainCamera.GetComponent<CameraScript>().StopCamera();
+                foreach (Transform child in transform)
+                {
+                    var rigidBody = child.GetComponent<Rigidbody2D>();
+                    rigidBody.gravityScale = 0;
+                    print(rigidBody.gravityScale);
+                }
             }
             hook.transform.Translate(Vector2.down * diveSpeed * Time.deltaTime, Space.World);
         }   
