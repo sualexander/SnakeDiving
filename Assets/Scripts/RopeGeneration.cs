@@ -11,8 +11,6 @@ public class RopeGeneration : MonoBehaviour
     void Start()
     {
         GenerateRope();
-
-        //StartCoroutine(DisableTrigger());
     }
 
     void GenerateRope()
@@ -29,10 +27,4 @@ public class RopeGeneration : MonoBehaviour
             prevBod = newSeg.GetComponent<Rigidbody2D>();
         }
     }
-
-    // IEnumerator DisableTrigger()
-    // {
-    //     yield return new WaitForSeconds(4);
-    //     for
-    // }
 }
