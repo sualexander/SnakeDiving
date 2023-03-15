@@ -62,7 +62,8 @@ public class Snake : MonoBehaviour
             hook.transform.Translate(Vector2.down * gravity * Time.deltaTime, Space.World);
             hook.transform.Translate(Vector2.right * Mathf.Sin(Time.time * speed) * amplitude * Time.deltaTime, Space.World);
 
-            Vector2 pos = hook.transform.position;
+            Vector2 pos = hook.transform.TransformPoint(hook.transform.position);
+            print(pos);
             if (pos.x > width / 2)
             {
                 if (!hasBordered)
@@ -107,7 +108,6 @@ public class Snake : MonoBehaviour
                 {
                     var rigidBody = child.GetComponent<Rigidbody2D>();
                     rigidBody.gravityScale = 0;
-                    print(rigidBody.gravityScale);
                 }
             }
             hook.transform.Translate(Vector2.down * diveSpeed * Time.deltaTime, Space.World);
