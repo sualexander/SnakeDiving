@@ -12,6 +12,8 @@ public class CameraScript : MonoBehaviour
     public float waitDuration = 2;
     public float panUp = 4;
     public float scoringHeight = -170;
+    public GameObject finalScore;
+    public float nextWaitDuration = 2;
 
     void Update()
     {
@@ -51,5 +53,9 @@ public class CameraScript : MonoBehaviour
             transform.position = new Vector3(transform.position.x, newPos, transform.position.z);
             yield return null;
         }
+
+        yield return new WaitForSeconds(nextWaitDuration);
+
+        finalScore.SetActive(false);
     }
 }
